@@ -1,6 +1,6 @@
-#Passing C structs through SystemVerilog DPI-C layer
+# Passing C structs through SystemVerilog DPI-C layer
 
-https://stackoverflow.com/questions/50351848/passing-c-structs-through-systemverilog-dpi-c-layer
+参考: https://stackoverflow.com/questions/50351848/passing-c-structs-through-systemverilog-dpi-c-layer
 
 ```
 #gcc -c -fPIC -Wall -ansi -pedantic -Wno-long-long -fwrapv -O0 dpi_top.c -o dpi_top.o
