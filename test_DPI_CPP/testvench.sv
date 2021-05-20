@@ -11,7 +11,8 @@ module automatic test;
   initial run();
  
   task run();
-    logic a = 1'bx;
+    //logic a = 1'bx;
+    automatic logic a = 1'bx;
     $display("a is %0d", a);
     helloFromCpp(a);
     a = 1;
