@@ -9,11 +9,12 @@ end
 endinterface
 
 module test;
-  my_interface #(10) my_if   ();
-  //my_interface #(99) v1[9:0] ();
+  my_interface #(10) my_if   (0);
+  //my_interface #(99) v1[9:0] (0);
   genvar i;
     generate for(i=0; i<9; i=i+1) begin
-      my_interface #(99) v1 (i[7:0]);
+      //my_interface #(99) v1 (i[7:0]);
+      my_interface #(99) v1 (i);
     end
   endgenerate
 endmodule

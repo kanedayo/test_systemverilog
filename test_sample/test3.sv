@@ -1,7 +1,7 @@
 interface A_if();
   int i=10;
   wire [7:0] w;
-  initial $display("Hellow Interface!!");
+  initial $display("[%m]:Hellow Interface!!");
 endinterface : A_if
 
 module test3;
@@ -19,7 +19,7 @@ module sub (input clk, interface a);
     a.i <= a.i + 1;
   end
   initial begin
-    $monitor("a.i=%3d a.w=%3d time:%t", a.i, a.w, $time);
+    $monitor("[%m]:a.i=%3d a.w=%3d time:%t", a.i, a.w, $time);
     #100 $finish;
   end
 endmodule : sub
