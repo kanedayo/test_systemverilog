@@ -1,0 +1,10 @@
+https://cqpub.co.jp/dwm/contents/0085/dwm008501210.pdf
+
+
+```
+INCDIR=/home/Tools/Cadence/INCISIVE15.20.010/tools/include/
+gcc -Wall -fPIC -shared -o libdpi.so CFunc1.c CFunc2.c -I $INCDIR
+
+irun +nc64bit -sv_lib libdpi.so -sv dpi_test1.sv
+irun +nc64bit -sv_lib libdpi.so -sv dpi_test2.sv
+```
