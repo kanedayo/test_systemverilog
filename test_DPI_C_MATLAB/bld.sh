@@ -5,13 +5,16 @@ source env.sh
 rm -fr plot_iq
 
 OPT=(
+# -v 
   -B macro_default
   -W lib:libplot_iq
   -T link:lib
   -d libplot_iq
-  -v plot_iq.m
+        plot_iq.m
 )
 
+mkdir -p  libplot_iq
+chmod g+w libplot_iq
 ssh matlab@randy35 cd `pwd` \; /MATLAB/$REV/bin/mcc ${OPT[*]} 
 
 
@@ -50,13 +53,13 @@ OPT=(
 #gcc ${OPT[*]}  ${SRC}.c
 
 OPT=(
+# -v
   -R2018a
-  
   -Llibplot_iq
   -Ilibplot_iq
   libplot_iq/libplot_iq.so
   plot_iq.c
-  -v CFLAGS=" $CFLAGS -Wall -Wextra -std=c99 "
+  CFLAGS=" $CFLAGS -Wall -Wextra -std=c99 "
 )
 #/MATLAB/$REV/bin/mbuild ${OPT[*]}
 #ssh matlab@randy35 cd `pwd` \; /MATLAB/$REV/bin/mbuild ${OPT[*]} 

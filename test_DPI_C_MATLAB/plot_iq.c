@@ -84,16 +84,16 @@ int plot_real_imag(double *re, double *im, const int len)
 }
 
 #define MATCLEN 10
-int main(int argc, const char ** argv)
+int main(void)
 {
   (void)plot_iq_init();
 
   int len = MATCLEN;
-  double complex matC[MATCLEN];
+  //double complex matC[MATCLEN];
   double re[MATCLEN],im[MATCLEN];
   for(int i=0; i<len; i++)
   {
-    matC[i] = i + (i * 1.0J);
+    //matC[i] = i + (i * 1.0J);
     re[i] = i;
     im[i] = i;
   }
