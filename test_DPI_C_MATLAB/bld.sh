@@ -2,8 +2,12 @@
 
 source env.sh
 
-rm -fr plot_iq
+rm -fr plot_iq.exe
 
+LIB=libplot_iq
+echo "==================="
+echo "  Create ${LIB}.so"
+echo "==================="
 OPT=(
 # -v 
   -B macro_default
@@ -15,12 +19,15 @@ OPT=(
 
 mkdir -p  libplot_iq
 chmod g+w libplot_iq
+
 ssh matlab@randy35 cd `pwd` \; /MATLAB/$REV/bin/mcc ${OPT[*]} 
 
 
-#gcc -Wall -fPIC -shared -o plot_iq.so plot_iq.c
 
 SRC=plot_iq
+echo "==================="
+echo "  Create ${SRC}.so"
+echo "==================="
 OPT=(
   -Wall
   -fPIC
@@ -30,43 +37,111 @@ OPT=(
   -std=c99
 )
 
+## for gcc 6.3.x
+#source scl_source enable devtoolset-6
 gcc ${OPT[*]} -o ${SRC}.so ${SRC}.c
 
-export LD_PRELOAD=$MATLABROOT/bin/glnxa64/glibc-2.17_shim.so
-
-OPT=(
-  -Wall
-  -Wextra
-  -I libplot_iq
-  -I $MATLABROOT/extern/include/
-  #-L $MATLABROOT/bin/glnxa64/libmwmclbase.so
-  #-L $MATLABROOT/runtime/glnxa64/libmwmclmcrrt.so
-  #-L $MATLABROOT/bin/glnxa64/
--L $MATLABROOT/bin/glnxa64/glibc-2.17_shim.so
--L $MATLABROOT/bin/glnxa64/
-  -L $MATLABROOT/runtime/glnxa64/
-  #-lmwmclbase
-  -lmwmclmcrrt
-  -std=c99
-)
-
+echo "==================="
+echo "  Create ${SRC}.exe"
+echo "==================="
+## for gcc 6.3.x
+#source scl_source enable devtoolset-6
 #gcc ${OPT[*]}  ${SRC}.c
 
-OPT=(
-# -v
-  -R2018a
-  -Llibplot_iq
-  -Ilibplot_iq
-  libplot_iq/libplot_iq.so
-  plot_iq.c
-  CFLAGS=" $CFLAGS -Wall -Wextra -std=c99 "
+CMD0=(
+gcc
+-c
+-DMX_COMPAT_64
+-DMATLAB_MEXCMD_RELEASE=R2018a
+-DUSE_MEX_CMD
+-D_GNU_SOURCE
+-DUNIX
+-DX11
+-I"libplot_iq"
+-I $MATLABROOT/extern/include/
+#-I $MATLABROOT/simulink/include/
+-Wall
+-Wextra
+-std=c99
+-O2
+-fwrapv
+-DNDEBUG
+plot_iq.c
+-o plot_iq.o
 )
-#/MATLAB/$REV/bin/mbuild ${OPT[*]}
-#ssh matlab@randy35 cd `pwd` \; /MATLAB/$REV/bin/mbuild ${OPT[*]} 
+CMD1=(
+gcc
+-pthread
+-Wl,-rpath-link,$MATLABROOT/bin/glnxa64
+-O plot_iq.o
+libplot_iq/libplot_iq.so
+-Llibplot_iq
+#"$MATLABROOT/sys/os/glnxa64/orig/libstdc++.so.6" # for R2020b
+#"$MATLABROOT/bin/glnxa64/glibc-2.17_shim.so" # for R2020b
+-L"$MATLABROOT/bin/glnxa64"
+-L"$MATLABROOT/runtime/glnxa64"
+-lm
+-lmwmclmcrrt
+-o plot_iq.exe
+)
+${CMD0[*]}
+${CMD1[*]}
 
-/MATLAB/$REV/bin/mbuild -R2018a \
-  -Llibplot_iq -Ilibplot_iq \
-  libplot_iq/libplot_iq.so plot_iq.c \
-  CFLAGS="$CFLAGS -Wall -Wextra -std=c99"
+MKEXE=(
+gcc
+#-c
+-DMX_COMPAT_64
+-DMATLAB_MEXCMD_RELEASE=R2018a
+-DUSE_MEX_CMD
+-D_GNU_SOURCE
+-DUNIX
+-DX11
+-I"libplot_iq"
+-I $MATLABROOT/extern/include/
+#-I $MATLABROOT/simulink/include/
+-Wall
+-Wextra
+-std=c99
+-O2
+-fwrapv
+-DNDEBUG
+plot_iq.c
+#-o plot_iq.o
 
-./plot_iq
+-pthread
+-Wl,-rpath-link,$MATLABROOT/bin/glnxa64
+#-O plot_iq.o
+libplot_iq/libplot_iq.so
+-Llibplot_iq
+"$MATLABROOT/sys/os/glnxa64/orig/libstdc++.so.6" # for R2020b
+"$MATLABROOT/bin/glnxa64/glibc-2.17_shim.so" # for R2020b
+-L"$MATLABROOT/runtime/glnxa64"
+-lm
+-lmwmclmcrrt
+-o plot_iq.exe
+)
+#${MKEXE[*]}
+
+
+## OPT=(
+## # -v
+##   -R2018a
+##   -Llibplot_iq
+##   -Ilibplot_iq
+##   libplot_iq/libplot_iq.so
+##   plot_iq.c
+##   CFLAGS=" $CFLAGS -Wall -Wextra -std=c99 "
+## )
+## 
+## #export LD_PRELOAD=$MATLABROOT/bin/glnxa64/glibc-2.17_shim.so
+## 
+## #/MATLAB/$REV/bin/mbuild ${OPT[*]}
+## #ssh matlab@randy35 cd `pwd` \; /MATLAB/$REV/bin/mbuild ${OPT[*]} 
+## 
+## 
+## /MATLAB/$REV/bin/mbuild -R2018a \
+##   -Llibplot_iq -Ilibplot_iq \
+##   libplot_iq/libplot_iq.so plot_iq.c \
+##   CFLAGS="$CFLAGS -Wall -Wextra -std=c99"
+
+./plot_iq.exe

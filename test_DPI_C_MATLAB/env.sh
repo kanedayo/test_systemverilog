@@ -1,7 +1,9 @@
 #!/bin/bash
 
-#REV=R2019a; VER=v96 # G2
-REV=R2020b; VER=v99 # F13
+REV=R2019a; VER=v96 # G2
+#REV=R2020a; VER=v98
+#REV=R2020b; VER=v99 # F13
+#REV=R2021b; VER=v911 # OB8
 
 # for mbuild
 PATH=/usr/local/bin:/bin:/usr/bin
