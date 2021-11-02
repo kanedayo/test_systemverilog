@@ -29,15 +29,9 @@ export XILINXD_LICENSE_FILE
  #-sv_lib $MATLABROOT/sys/os/glnxa64/libstdc++.so.6
 OPT=(
 -sv_root /
-#-L      /opt/rh/devtoolset-6/root/lib/gcc/x86_64-redhat-linux/6.3.1/
-#-L      $MATLABROOT/runtime/glnxa64/
-#-L      $MATLABROOT/bin/glnxa64/
-#-L      $MATLABROOT/sys/os/glnxa64/orig/
-#-L      $MATLABROOT/extern/bin/glnxa64/
-#-L      $MATLABROOT/sys/os/glnxa64/
- -sv_lib $MATLABROOT/sys/os/glnxa64/orig/libstdc++.so.6
- -sv_lib $MATLABROOT/sys/os/glnxa64/libstdc++.so.6
 #-sv_lib $MATLABROOT/bin/glnxa64/glibc-2.17_shim.so
+#-sv_lib $MATLABROOT/sys/os/glnxa64/orig/libstdc++.so.6
+ -sv_lib $MATLABROOT/sys/os/glnxa64/libstdc++.so.6
 #-sv_lib $MATLABROOT/bin/glnxa64/libmwmclbase.so
  -sv_lib $MATLABROOT/runtime/glnxa64/libmwmclmcrrt.so
 
